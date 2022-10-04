@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.5.0"
+      version = "~> 4.33.0"
     }
   }
 }
@@ -49,15 +49,16 @@ resource "aws_instance" "ipfs_testing_node" {
     sudo apt install -y unzip git make build-essential
     wget https://github.com/grafana/loki/releases/download/v2.3.0/promtail-linux-amd64.zip
     wget https://golang.org/dl/go1.17.1.linux-amd64.tar.gz
-    wget https://raw.githubusercontent.com/ConsenSys/ipfs-lookup-measurement/main/node/promtail-cloud-config.yaml
+    wget https://raw.githubusercontent.com/dennis-tra/ipfs-lookup-measurement/main/node/promtail-cloud-config.yaml
     unzip ./promtail-linux-amd64.zip
     sudo tar -C /usr/local -xzf go1.17.1.linux-amd64.tar.gz
     mkdir /home/ubuntu/go
     export HOME=/home/ubuntu
     export GOPATH=/home/ubuntu/go
     export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
-    git clone https://github.com/ConsenSys/ipfs-lookup-measurement.git
+    git clone https://github.com/dennis-tra/ipfs-lookup-measurement.git
     cd ipfs-lookup-measurement
+    git checkout main
     cd controller
     make agent
     cd ..

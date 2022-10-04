@@ -26,7 +26,7 @@ func main() {
 		fmt.Printf("error in getting the key: %v\n", err.Error())
 		return
 	}
-	key, err := base64.RawStdEncoding.DecodeString(string(keyStr))
+	key, err := base64.StdEncoding.DecodeString(string(keyStr))
 	if err != nil {
 		fmt.Printf("error decoding key string: %v\n", err.Error())
 		return

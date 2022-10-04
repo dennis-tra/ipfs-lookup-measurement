@@ -29,5 +29,9 @@ func main() {
 		fmt.Printf("error in getting the key: %v\n", err.Error())
 		return
 	}
-	server.NewServer(context.Background(), ":"+*portNumStr, string(key))
+	if err = server.NewServer(context.Background(), ":"+*portNumStr, string(key)); err != nil {
+		fmt.Printf("error starting server: %v\n", err.Error())
+		return
+	}
+	fmt.Printf("done\n")
 }
