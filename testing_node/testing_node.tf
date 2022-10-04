@@ -64,15 +64,15 @@ resource "aws_instance" "ipfs_testing_node" {
     cd ..
     git clone https://github.com/dennis-tra/go-libp2p-kad-dht.git
     cd go-libp2p-kad-dht
-    git checkout more-logging
+    git checkout v0.17.0-more-logging
     cd ..
     git clone https://github.com/dennis-tra/go-bitswap.git
     cd go-bitswap
-    git checkout more-logging
+    git checkout v0.9.0-more-logging
     cd ..
     git clone https://github.com/dennis-tra/go-ipfs.git
     cd go-ipfs
-    git checkout more-logging
+    git checkout v0.15.0-more-logging
     echo "replace github.com/libp2p/go-libp2p-kad-dht => ../go-libp2p-kad-dht" >> go.mod
     echo "replace github.com/ipfs/go-bitswap => ../go-bitswap" >> go.mod
     go mod tidy
