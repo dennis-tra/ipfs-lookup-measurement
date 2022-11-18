@@ -12,6 +12,10 @@ variable "KEY" {
   type = string
 }
 
+variable "HYDRA_IGNORE_PCT" {
+  type = number
+}
+
 provider "aws" {
   # Bahrain
   # AMI: ami-0b4946d7420c44be4
@@ -64,12 +68,13 @@ locals {
 module "testing_node_0" {
   source = "./testing_node"
 
-  monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
-  key           = var.KEY
-  ami           = "ami-0b4946d7420c44be4"
-  instance      = "t3.small"
-  num           = 0
-  default_tags  = local.default_tags
+  monitoring_ip    = aws_instance.ipfs_testing_monitor.public_ip
+  key              = var.KEY
+  hydra_ignore_pct = var.HYDRA_IGNORE_PCT
+  ami              = "ami-0b4946d7420c44be4"
+  instance         = "t3.small"
+  num              = 0
+  default_tags     = local.default_tags
 
   providers = {
     aws = aws.me_south_1
@@ -79,11 +84,12 @@ module "testing_node_0" {
 module "testing_node_1" {
   source = "./testing_node"
 
-  monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
-  key           = var.KEY
-  ami           = "ami-0bf8b986de7e3c7ce"
-  num           = 1
-  default_tags  = local.default_tags
+  monitoring_ip    = aws_instance.ipfs_testing_monitor.public_ip
+  key              = var.KEY
+  hydra_ignore_pct = var.HYDRA_IGNORE_PCT
+  ami              = "ami-0bf8b986de7e3c7ce"
+  num              = 1
+  default_tags     = local.default_tags
 
   providers = {
     aws = aws.ap_southeast_2
@@ -93,12 +99,13 @@ module "testing_node_1" {
 module "testing_node_2" {
   source = "./testing_node"
 
-  monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
-  key           = var.KEY
-  ami           = "ami-0ff86122fd4ad7208"
-  instance      = "t3.small"
-  num           = 2
-  default_tags  = local.default_tags
+  monitoring_ip    = aws_instance.ipfs_testing_monitor.public_ip
+  key              = var.KEY
+  hydra_ignore_pct = var.HYDRA_IGNORE_PCT
+  ami              = "ami-0ff86122fd4ad7208"
+  instance         = "t3.small"
+  num              = 2
+  default_tags     = local.default_tags
 
   providers = {
     aws = aws.af_south_1
@@ -108,11 +115,12 @@ module "testing_node_2" {
 module "testing_node_3" {
   source = "./testing_node"
 
-  monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
-  key           = var.KEY
-  ami           = "ami-053ac55bdcfe96e85"
-  num           = 3
-  default_tags  = local.default_tags
+  monitoring_ip    = aws_instance.ipfs_testing_monitor.public_ip
+  key              = var.KEY
+  hydra_ignore_pct = var.HYDRA_IGNORE_PCT
+  ami              = "ami-053ac55bdcfe96e85"
+  num              = 3
+  default_tags     = local.default_tags
 
   providers = {
     aws = aws.us_west_1
@@ -122,11 +130,12 @@ module "testing_node_3" {
 module "testing_node_4" {
   source = "./testing_node"
 
-  monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
-  key           = var.KEY
-  ami           = "ami-0a49b025fffbbdac6"
-  num           = 4
-  default_tags  = local.default_tags
+  monitoring_ip    = aws_instance.ipfs_testing_monitor.public_ip
+  key              = var.KEY
+  hydra_ignore_pct = var.HYDRA_IGNORE_PCT
+  ami              = "ami-0a49b025fffbbdac6"
+  num              = 4
+  default_tags     = local.default_tags
 
   providers = {
     aws = aws.eu_central_1
@@ -136,11 +145,12 @@ module "testing_node_4" {
 module "testing_node_5" {
   source = "./testing_node"
 
-  monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
-  key           = var.KEY
-  ami           = "ami-0e66f5495b4efdd0f"
-  num           = 5
-  default_tags  = local.default_tags
+  monitoring_ip    = aws_instance.ipfs_testing_monitor.public_ip
+  key              = var.KEY
+  hydra_ignore_pct = var.HYDRA_IGNORE_PCT
+  ami              = "ami-0e66f5495b4efdd0f"
+  num              = 5
+  default_tags     = local.default_tags
 
   providers = {
     aws = aws.sa_east_1
@@ -181,7 +191,7 @@ resource "aws_instance" "ipfs_testing_monitor" {
 }
 
 resource "aws_security_group" "security_ipfs_testing_monitor" {
-  name        = "security_ipfs_testing_monitor"
+  name        = "security_ipfs_testing_monitor_w_hydras"
   description = "security group for ipfs testing monitor"
   provider    = aws.eu_central_1
 
