@@ -27,3 +27,5 @@ node/agent
 # Log file
 *.log
 .DS_Store
+**/*.log.p
+**/*.zip

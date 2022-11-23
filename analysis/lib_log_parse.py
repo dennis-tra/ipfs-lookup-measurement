@@ -2,9 +2,9 @@ import pickle
 from datetime import datetime
 from typing import List
 
-from dht.model_log_file import LogFile
-from dht.model_publication import Publication
-from dht.model_retrieval import Retrieval
+from model_log_file import LogFile
+from model_publication import Publication
+from model_retrieval import Retrieval
 
 
 class ParsedLogFile:
@@ -20,6 +20,7 @@ class ParsedLogFile:
 
 def load_parsed_logs(log_files: List[str]) -> List[ParsedLogFile]:
     parsed_logs: List[ParsedLogFile] = []
+    print("log_files", log_files)
     for log_file in log_files:
         start = datetime.now()
         with open(log_file + ".p", "rb") as f:

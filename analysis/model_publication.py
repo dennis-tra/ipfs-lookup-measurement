@@ -2,10 +2,10 @@ import durationpy
 from enum import Enum
 from datetime import datetime, timedelta
 
-from dht.model_add_provider_query import AddProviderQuery
-from dht.model_get_providers_query import GetProvidersQuery
-from dht.model_peer import Peer
-from dht.model_find_node_query import FindNodeQuery
+from model_add_provider_query import AddProviderQuery
+from model_get_providers_query import GetProvidersQuery
+from model_peer import Peer
+from model_find_node_query import FindNodeQuery
 
 from typing import Optional, List, Dict
 

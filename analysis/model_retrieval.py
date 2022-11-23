@@ -1,7 +1,7 @@
 from enum import Enum
 from datetime import datetime
-from dht.model_get_providers_query import GetProvidersQuery
-from dht.model_peer import Peer
+from model_get_providers_query import GetProvidersQuery
+from model_peer import Peer
 from typing import Optional, List, Dict, Set
 
 

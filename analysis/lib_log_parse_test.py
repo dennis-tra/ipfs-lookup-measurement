@@ -2,8 +2,8 @@ import unittest
 
 from dateutil.parser import isoparse
 
-from dht.model_log_file import LogFile
-from dht.model_peer import Peer
+from model_log_file import LogFile
+from model_peer import Peer
 
 
 class TestLog(unittest.TestCase):

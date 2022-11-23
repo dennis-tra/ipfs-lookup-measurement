@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, List
 
-from dht.model_peer import Peer
+from model_peer import Peer
 
 
 class FindNodeQuery:

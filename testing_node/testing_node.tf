@@ -100,12 +100,12 @@ resource "aws_instance" "ipfs_testing_node" {
   EOF
 
   tags = merge(var.default_tags, {
-    Name = "ipfs-testing-node-wo-${HYDRA_IGNORE_PCT}pct-hydras${var.num}"
+    Name = "ipfs-testing-node-wo-${var.hydra_ignore_pct}pct-hydras${var.num}"
   })
 }
 
 resource "aws_security_group" "security_ipfs_testing_node" {
-  name        = "security_ipfs_testing_node_wo_${HYDRA_IGNORE_PCT}pct_hydras"
+  name        = "security_ipfs_testing_node_wo_${var.hydra_ignore_pct}pct_hydras"
   description = "security group for ipfs testing node"
 
   egress {
@@ -144,6 +144,6 @@ resource "aws_security_group" "security_ipfs_testing_node" {
   }
 
   tags = merge(var.default_tags, {
-    Name = "security_ipfs_testing_node_wo_${HYDRA_IGNORE_PCT}pct-${var.num}"
+    Name = "security_ipfs_testing_node_wo_${var.hydra_ignore_pct}pct-${var.num}"
   })
 }

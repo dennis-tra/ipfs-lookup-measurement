@@ -1,5 +1,5 @@
 import unittest
-from dht.model_log_file import LogFile
+from model_log_file import LogFile
 
 
 class TestLog(unittest.TestCase):

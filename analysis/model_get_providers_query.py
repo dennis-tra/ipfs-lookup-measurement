@@ -1,5 +1,5 @@
 from datetime import datetime
-from dht.model_peer import Peer
+from model_peer import Peer
 from typing import Optional, List
 
 

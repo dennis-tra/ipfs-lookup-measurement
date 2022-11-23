@@ -162,7 +162,7 @@ resource "aws_instance" "ipfs_testing_monitor" {
   provider      = aws.eu_central_1
   instance_type = "t2.small"
 
-  security_groups = ["security_ipfs_testing_monitor"]
+  security_groups = [aws_security_group.security_ipfs_testing_monitor.name]
   user_data       = <<-EOF
     #!/bin/sh
     cd /home/ubuntu/
@@ -186,12 +186,12 @@ resource "aws_instance" "ipfs_testing_monitor" {
   EOF
 
   tags = merge(local.default_tags, {
-    Name = "ipfs_testing_monitor"
+    Name = "ipfs_testing_monitor_wo_${var.HYDRA_IGNORE_PCT}pct_hydras"
   })
 }
 
 resource "aws_security_group" "security_ipfs_testing_monitor" {
-  name        = "security_ipfs_testing_monitor_w_hydras"
+  name        = "security_ipfs_testing_monitor_wo_${var.HYDRA_IGNORE_PCT}pct_hydras"
   description = "security group for ipfs testing monitor"
   provider    = aws.eu_central_1
 

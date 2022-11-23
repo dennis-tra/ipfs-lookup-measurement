@@ -4,7 +4,7 @@ from datetime import datetime
 from dateutil.parser import isoparse
 from typing import Any, Optional, List
 
-from dht.model_peer import Peer
+from model_peer import Peer
 
 
 class ParsedLogLine:
@@ -91,7 +91,7 @@ class LogLine:
             return None
 
         peers: List[Peer] = []
-        for peer_str in match.group(3).split(" "):
+        for peer_str in match.group(3).replace("Taubyte Node v1.0", "Taubyte-Node-v1.0").split(" "):
             sub_match = re.search(r"(\w+)\((.*)\)", peer_str)
             if sub_match is None:
                 raise Exception(f"could not parse peers in {match.group(1)}")
