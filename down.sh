@@ -1,4 +1,9 @@
 #!/bin/bash
 
-HYDRA_IGNORE_PCT=$(cat .ignored_heads_pct)
-terraform destroy -var="KEY=0" -var="HYDRA_IGNORE_PCT=$HYDRA_IGNORE_PCT" -state=terraform-wo-${HYDRA_IGNORE_PCT}pct.tfstate
+read -r -p "Please enter the experiment ID: " EXPERIMENT_ID
+
+terraform destroy -var="KEY=0" -var="experiment_id=$EXPERIMENT_ID" -state="terraform-${EXPERIMENT_ID}.tfstate"
+
+rm "nodes-list-${EXPERIMENT_ID}.out"
+rm "terraform-${EXPERIMENT_ID}.tfstate"
+rm "terraform-${EXPERIMENT_ID}.tfstate.backup"

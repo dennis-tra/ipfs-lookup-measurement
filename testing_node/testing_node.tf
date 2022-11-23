@@ -15,8 +15,8 @@ variable "key" {
   type = string
 }
 
-variable "hydra_ignore_pct" {
-  type = number
+variable "experiment_id" {
+  type = string
 }
 
 variable "ami" {
@@ -69,7 +69,7 @@ resource "aws_instance" "ipfs_testing_node" {
     cd ..
     git clone https://github.com/dennis-tra/go-libp2p-kad-dht.git
     cd go-libp2p-kad-dht
-    git checkout v0.17.0-more-logging-2022-11-18-hydras-ignored-${var.hydra_ignore_pct}pct
+    git checkout v0.17.0-more-logging
     cd ..
     git clone https://github.com/dennis-tra/go-bitswap.git
     cd go-bitswap
@@ -100,12 +100,12 @@ resource "aws_instance" "ipfs_testing_node" {
   EOF
 
   tags = merge(var.default_tags, {
-    Name = "ipfs-testing-node-wo-${var.hydra_ignore_pct}pct-hydras${var.num}"
+    Name = "ipfs-testing-node-${var.experiment_id}-${var.num}"
   })
 }
 
 resource "aws_security_group" "security_ipfs_testing_node" {
-  name        = "security_ipfs_testing_node_wo_${var.hydra_ignore_pct}pct_hydras"
+  name        = "security_ipfs_testing_node_${var.experiment_id}-${var.num}"
   description = "security group for ipfs testing node"
 
   egress {
@@ -144,6 +144,6 @@ resource "aws_security_group" "security_ipfs_testing_node" {
   }
 
   tags = merge(var.default_tags, {
-    Name = "security_ipfs_testing_node_wo_${var.hydra_ignore_pct}pct-${var.num}"
+    Name = "security_ipfs_testing_node_${var.experiment_id}-${var.num}"
   })
 }

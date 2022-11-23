@@ -12,8 +12,8 @@ variable "KEY" {
   type = string
 }
 
-variable "HYDRA_IGNORE_PCT" {
-  type = number
+variable "experiment_id" {
+  type = string
 }
 
 provider "aws" {
@@ -68,13 +68,13 @@ locals {
 module "testing_node_0" {
   source = "./testing_node"
 
-  monitoring_ip    = aws_instance.ipfs_testing_monitor.public_ip
-  key              = var.KEY
-  hydra_ignore_pct = var.HYDRA_IGNORE_PCT
-  ami              = "ami-0b4946d7420c44be4"
-  instance         = "t3.small"
-  num              = 0
-  default_tags     = local.default_tags
+  monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
+  key           = var.KEY
+  experiment_id = var.experiment_id
+  ami           = "ami-0b4946d7420c44be4"
+  instance      = "t3.small"
+  num           = 0
+  default_tags  = local.default_tags
 
   providers = {
     aws = aws.me_south_1
@@ -84,12 +84,12 @@ module "testing_node_0" {
 module "testing_node_1" {
   source = "./testing_node"
 
-  monitoring_ip    = aws_instance.ipfs_testing_monitor.public_ip
-  key              = var.KEY
-  hydra_ignore_pct = var.HYDRA_IGNORE_PCT
-  ami              = "ami-0bf8b986de7e3c7ce"
-  num              = 1
-  default_tags     = local.default_tags
+  monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
+  key           = var.KEY
+  experiment_id = var.experiment_id
+  ami           = "ami-0bf8b986de7e3c7ce"
+  num           = 1
+  default_tags  = local.default_tags
 
   providers = {
     aws = aws.ap_southeast_2
@@ -99,13 +99,13 @@ module "testing_node_1" {
 module "testing_node_2" {
   source = "./testing_node"
 
-  monitoring_ip    = aws_instance.ipfs_testing_monitor.public_ip
-  key              = var.KEY
-  hydra_ignore_pct = var.HYDRA_IGNORE_PCT
-  ami              = "ami-0ff86122fd4ad7208"
-  instance         = "t3.small"
-  num              = 2
-  default_tags     = local.default_tags
+  monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
+  key           = var.KEY
+  experiment_id = var.experiment_id
+  ami           = "ami-0ff86122fd4ad7208"
+  instance      = "t3.small"
+  num           = 2
+  default_tags  = local.default_tags
 
   providers = {
     aws = aws.af_south_1
@@ -115,12 +115,12 @@ module "testing_node_2" {
 module "testing_node_3" {
   source = "./testing_node"
 
-  monitoring_ip    = aws_instance.ipfs_testing_monitor.public_ip
-  key              = var.KEY
-  hydra_ignore_pct = var.HYDRA_IGNORE_PCT
-  ami              = "ami-053ac55bdcfe96e85"
-  num              = 3
-  default_tags     = local.default_tags
+  monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
+  key           = var.KEY
+  experiment_id = var.experiment_id
+  ami           = "ami-053ac55bdcfe96e85"
+  num           = 3
+  default_tags  = local.default_tags
 
   providers = {
     aws = aws.us_west_1
@@ -130,12 +130,12 @@ module "testing_node_3" {
 module "testing_node_4" {
   source = "./testing_node"
 
-  monitoring_ip    = aws_instance.ipfs_testing_monitor.public_ip
-  key              = var.KEY
-  hydra_ignore_pct = var.HYDRA_IGNORE_PCT
-  ami              = "ami-0a49b025fffbbdac6"
-  num              = 4
-  default_tags     = local.default_tags
+  monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
+  key           = var.KEY
+  experiment_id = var.experiment_id
+  ami           = "ami-0a49b025fffbbdac6"
+  num           = 4
+  default_tags  = local.default_tags
 
   providers = {
     aws = aws.eu_central_1
@@ -145,12 +145,12 @@ module "testing_node_4" {
 module "testing_node_5" {
   source = "./testing_node"
 
-  monitoring_ip    = aws_instance.ipfs_testing_monitor.public_ip
-  key              = var.KEY
-  hydra_ignore_pct = var.HYDRA_IGNORE_PCT
-  ami              = "ami-0e66f5495b4efdd0f"
-  num              = 5
-  default_tags     = local.default_tags
+  monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
+  key           = var.KEY
+  experiment_id = var.experiment_id
+  ami           = "ami-0e66f5495b4efdd0f"
+  num           = 5
+  default_tags  = local.default_tags
 
   providers = {
     aws = aws.sa_east_1
@@ -167,7 +167,7 @@ resource "aws_instance" "ipfs_testing_monitor" {
     #!/bin/sh
     cd /home/ubuntu/
     sudo apt-get update
-    sudo apt install -y unzip
+    sudo apt install -y unzip make wget
     wget https://github.com/grafana/loki/releases/download/v2.3.0/loki-linux-amd64.zip
     wget https://dl.grafana.com/oss/release/grafana-8.1.5.linux-amd64.tar.gz
     wget https://raw.githubusercontent.com/grafana/loki/v2.3.0/cmd/loki/loki-local-config.yaml
@@ -183,15 +183,30 @@ resource "aws_instance" "ipfs_testing_monitor" {
     nohup ./loki-linux-amd64 -config.file=loki-local-config.yaml &
     cd ./grafana-8.1.5/bin
     nohup ./grafana-server &
+
+    # install Go
+    cd /home/ubuntu/
+    wget https://go.dev/dl/go1.19.3.linux-amd64.tar.gz
+    sudo tar -C /usr/local -xzf go1.19.3.linux-amd64.tar.gz
+    export PATH=$PATH:/usr/local/go/bin
+    echo 'export PATH=$PATH:/usr/local/go/bin' >> .bashrc
+
+    # install controller
+    git clone https://github.com/dennis-tra/ipfs-lookup-measurement.git
+    echo "${var.KEY}" > ./ipfs-lookup-measurement/.key
+
+    chown ubuntu:ubuntu -R ipfs-lookup-measurement
+    cd ipfs-lookup-measurement/controller
+    make controller
   EOF
 
   tags = merge(local.default_tags, {
-    Name = "ipfs_testing_monitor_wo_${var.HYDRA_IGNORE_PCT}pct_hydras"
+    Name = "ipfs_testing_monitor_${var.experiment_id}"
   })
 }
 
 resource "aws_security_group" "security_ipfs_testing_monitor" {
-  name        = "security_ipfs_testing_monitor_wo_${var.HYDRA_IGNORE_PCT}pct_hydras"
+  name        = "security_ipfs_testing_monitor_${var.experiment_id}"
   description = "security group for ipfs testing monitor"
   provider    = aws.eu_central_1
 
@@ -224,6 +239,6 @@ resource "aws_security_group" "security_ipfs_testing_monitor" {
   }
 
   tags = merge(local.default_tags, {
-    Name = "security_ipfs_testing_monitor"
+    Name = "security_ipfs_testing_monitor_${var.experiment_id}"
   })
 }

@@ -1,10 +1,11 @@
 #!/bin/sh
 
+read -r -p "Please enter the experiment ID: " EXPERIMENT_ID
+
 KEY=$(cat .key)
-HYDRA_IGNORE_PCT=$(cat .ignored_heads_pct)
-terraform apply -var="KEY=$KEY" -var="HYDRA_IGNORE_PCT=$HYDRA_IGNORE_PCT" -state=terraform-wo-${HYDRA_IGNORE_PCT}pct.tfstate
+terraform apply -var="KEY=$KEY" -var="experiment_id=$EXPERIMENT_ID" -state="terraform-${EXPERIMENT_ID}.tfstate"
 sleep 5
-terraform output -state=terraform-wo-${HYDRA_IGNORE_PCT}pct.tfstate > nodes-list-wo-${HYDRA_IGNORE_PCT}pct.out
-monitorIP=$(head -1 ./nodes-list-wo-${HYDRA_IGNORE_PCT}pct.out | cut -d'"' -f2)
+terraform output -state="terraform-${EXPERIMENT_ID}.tfstate" > "nodes-list-${EXPERIMENT_ID}.out"
+monitorIP=$(head -1 "nodes-list-${EXPERIMENT_ID}.out" | cut -d'"' -f2)
 echo "monitor URL is $monitorIP:3000"
 open "http://$monitorIP:3000"
