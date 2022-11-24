@@ -16,6 +16,15 @@ variable "experiment_id" {
   type = string
 }
 
+variable "ssh_key" {
+  type    = string
+  default = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP8u/BYblv0E4eWDVLltsENyCUOSNUPL5nIe8cmeZldY"
+}
+
+provider "aws" {
+  region = "eu-central-1"
+}
+
 provider "aws" {
   # Bahrain
   # AMI: ami-0b4946d7420c44be4
@@ -71,8 +80,8 @@ module "testing_node_0" {
   monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
   key           = var.KEY
   experiment_id = var.experiment_id
+  ssh_key       = var.ssh_key
   ami           = "ami-0b4946d7420c44be4"
-  instance      = "t3.small"
   num           = 0
   default_tags  = local.default_tags
 
@@ -87,6 +96,7 @@ module "testing_node_1" {
   monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
   key           = var.KEY
   experiment_id = var.experiment_id
+  ssh_key       = var.ssh_key
   ami           = "ami-0bf8b986de7e3c7ce"
   num           = 1
   default_tags  = local.default_tags
@@ -102,8 +112,8 @@ module "testing_node_2" {
   monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
   key           = var.KEY
   experiment_id = var.experiment_id
+  ssh_key       = var.ssh_key
   ami           = "ami-0ff86122fd4ad7208"
-  instance      = "t3.small"
   num           = 2
   default_tags  = local.default_tags
 
@@ -118,6 +128,7 @@ module "testing_node_3" {
   monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
   key           = var.KEY
   experiment_id = var.experiment_id
+  ssh_key       = var.ssh_key
   ami           = "ami-053ac55bdcfe96e85"
   num           = 3
   default_tags  = local.default_tags
@@ -133,6 +144,7 @@ module "testing_node_4" {
   monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
   key           = var.KEY
   experiment_id = var.experiment_id
+  ssh_key       = var.ssh_key
   ami           = "ami-0a49b025fffbbdac6"
   num           = 4
   default_tags  = local.default_tags
@@ -148,6 +160,7 @@ module "testing_node_5" {
   monitoring_ip = aws_instance.ipfs_testing_monitor.public_ip
   key           = var.KEY
   experiment_id = var.experiment_id
+  ssh_key       = var.ssh_key
   ami           = "ami-0e66f5495b4efdd0f"
   num           = 5
   default_tags  = local.default_tags
@@ -160,7 +173,8 @@ module "testing_node_5" {
 resource "aws_instance" "ipfs_testing_monitor" {
   ami           = "ami-0a49b025fffbbdac6"
   provider      = aws.eu_central_1
-  instance_type = "t2.small"
+  instance_type = "t2.medium"
+  key_name      = aws_key_pair.ssh_key.key_name
 
   security_groups = [aws_security_group.security_ipfs_testing_monitor.name]
   user_data       = <<-EOF
@@ -241,4 +255,9 @@ resource "aws_security_group" "security_ipfs_testing_monitor" {
   tags = merge(local.default_tags, {
     Name = "security_ipfs_testing_monitor_${var.experiment_id}"
   })
+}
+
+resource "aws_key_pair" "ssh_key" {
+  key_name   = "ssh-key-monitor-${var.experiment_id}"
+  public_key = var.ssh_key
 }
