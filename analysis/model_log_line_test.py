@@ -50,6 +50,13 @@ class TestLog(unittest.TestCase):
 
         cid = LogLine("invalid", None).is_getting_closest_peers()
         self.assertEqual(cid, None)
+    def test_log_is_got_closest_peers_2(self):
+        parsed = LogLine(
+            "2022-11-25T03:48:22.350059683Z: Got 20 closest peers to cid QmaQjcW1x19HdSmwqyjMScQm6zZRwkxKaNAKtEhiHtFvWR from 12D3KooWBYtoUS7BqWeUQAbQz95H7b87XnwYacrnaAHmoiLHEDqk(n.a.):  12D3KooWKBCUEv8ZaUcwC3MAyuw1NyFCACrAuTHyt1XjRP5pbYHr QmQDc64zxUD889B9Z6SMnqhhhgF3S9RQndRxnzukKqpZjC 12D3KooWKE9qyoNuLM9mujQEk44AdXGwT17QBf6CaeimRz18zXD6 12D3KooWGgrQx8KPHRSuxGrfVa23bfDTxH51DBRe7fwzGVU9hoLN hydra(12D3KooWSapb7Ex5KWoApACXgcCLcNKtnXrDNwtFUurWJZPoyQMz) 12D3KooWRi7rFDooyANicb7YBb22webt8pi4L92SGU4MgNR5sZrk 12D3KooWJqw7s7NxmPTVAC54Jf3vZEPArZ1ra1fsHfCQN3JTmxwG QmeJYNK7xSFPbJSmepuWC7KjknQKCbR1ocJp4q22fXiNK2 12D3KooWCpvc6s912Jwjgact43bLvLD6FsUFgKof8Xs67BAf6ty8 QmbYwDhkMETo42WsxZQwY6VSDn8t8e4YXvBm1HUG3vpV1U 12D3KooWAdDuwsmFg6E1WqZRbPYjLbPavzNgku4utELpisKktKQ7 12D3KooWAjGpbG9M1jsaFDBBajaVDHmVAVqg5nffqm7vW8zWeiVC hydra(12D3KooWSkXAByovhZNwDuAVxZsa3iUHytSkeS7e9RRKRJWeyxbV) 12D3KooWBh9vfKN7YwAkNwdePRNEXJkv8XgfkGcCfFN97EXs7n8T hydra(12D3KooWMi9hCn4inTnMNHkTAd6pQEYcgTff99p1tP2wT6jBH8Hr) 12D3KooWDhyAdHucrzDj1zPx1uhUR4e3qu111MgSMcPT7gmkZPnW 12D3KooWM852N7a1oxUGBzMeMLsC7Zc3m2MxuDMwCYc6P3KJfHTu 12D3KooWGXw6gKcb75oZQGm4GjL7oqKHmuBLB2gtzBBUz6LzfPsB 12D3KooWKUHGRoj7qDtaSXD7aqS2HTw4hvSdG8RjfrUpL9atmqqc hydra(12D3KooWMVPLr2yMZio61kouK1h4sQg5sVEPQ9AfZQkq21sn8c3A)",
+            None).is_got_closest_peers()
+        self.assertEqual(parsed.cid, "QmaQjcW1x19HdSmwqyjMScQm6zZRwkxKaNAKtEhiHtFvWR")
+        self.assertEqual(parsed.remote_peer.id, "12D3KooWBYtoUS7BqWeUQAbQz95H7b87XnwYacrnaAHmoiLHEDqk")
+        self.assertEqual(parsed.remote_peer.agent_version, "n.a.")
 
     def test_log_is_got_closest_peers(self):
         parsed = LogLine(

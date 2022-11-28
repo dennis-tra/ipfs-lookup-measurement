@@ -57,7 +57,7 @@ class LogLine:
     def is_got_closest_peers(self) -> Optional[ParsedLogLine]:
         if "closest peers to cid" not in self.line:
             return None
-        match = re.search(r"([^\s]+): Got (\d+) closest peers to cid (\w+) from (\w+)\((.*)\): \s?([\w\s]+)$", self.line)
+        match = re.search(r"([^\s]+): Got (\d+) closest peers to cid (\w+) from (\w+)\((.*)\): \s?([\(\)\w\s]+)$", self.line)
         if match is None:
             return None
 
@@ -68,6 +68,8 @@ class LogLine:
         for peer_str in match.group(6).split(" "):
             if peer_str == "":
                 continue
+            if peer_str.startswith("hydra"):
+                peer_str = peer_str[6:-1]
             peers.append(Peer(peer_str, "n.a."))
         parsed.closest_peers = peers
         return parsed
