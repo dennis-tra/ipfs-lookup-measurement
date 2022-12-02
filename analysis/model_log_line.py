@@ -29,7 +29,7 @@ class ParsedLogLine:
 class LogLine:
     line: str
 
-    def __init__(self, line: str, timestamp: datetime) -> None:
+    def __init__(self, line: str) -> None:
         self.line = line
 
     def is_start_providing(self) -> Optional[ParsedLogLine]:
@@ -297,5 +297,5 @@ class LogLine:
     def from_dict(obj: Any) -> 'LogLine':
         assert isinstance(obj, dict)
         line = obj.get("line")
-        timestamp = dateutil.parser.parse(obj.get("timestamp"))
-        return LogLine(line, timestamp)
+        # timestamp = dateutil.parser.parse(obj.get("timestamp"))
+        return LogLine(line)
