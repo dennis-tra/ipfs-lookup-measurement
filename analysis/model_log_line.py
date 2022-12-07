@@ -192,7 +192,7 @@ class LogLine:
     def is_start_getting_providers(self) -> Optional[ParsedLogLine]:
         if "Getting providers for cid" not in self.line:
             return None
-        match = re.search(r"([^\s]+): Getting providers for cid (\w+) from (\w+)\((.+)\)", self.line)
+        match = re.search(r"([^\s]+): Getting providers for cid (\w+) from (\w+)\((.*)\)", self.line)
         if match is None:
             return None
 

@@ -6,7 +6,7 @@ from subprocess import run
 
 
 def download_logs(nodes_list, outfile):
-    node_count = 0
+    nodes = []
     with open(nodes_list, "r") as f:
         for line in f.readlines():
             if line.startswith("monitor_ip"):
@@ -14,11 +14,11 @@ def download_logs(nodes_list, outfile):
                 print(monitor_ip)
                 os.putenv("LOKI_ADDR", f"http://{monitor_ip}:3100/")
             elif line.startswith("node_"):
-                node_count += 1
+                nodes += [line[5]]
     
-    for i in range(0, node_count):
-        cmd = """logcli query --limit=987654321 --since=2000h --output=jsonl '{host="node%d"}' > %s-node-%d.log """ % (
-            i, outfile, i)
+    for node in nodes:
+        cmd = """logcli query --limit=987654321 --since=2000h --output=jsonl '{host="node%s"}' > %s-node-%s.log """ % (
+            node, outfile, node)
         run(cmd, shell=True)
 
 
