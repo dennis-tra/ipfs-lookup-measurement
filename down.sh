@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 read -r -p "Please enter the experiment ID: " EXPERIMENT_ID
 
 terraform destroy -var="KEY=0" -var="experiment_id=$EXPERIMENT_ID" -state="terraform-${EXPERIMENT_ID}.tfstate"

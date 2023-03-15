@@ -26,6 +26,8 @@ class LogFile:
             for idx, line in enumerate(reversed(f.readlines())):
                 try:
                     log = LogLine.from_dict(json.loads(line))
+                    if "QmbZTuJgRAHFnWnFNtrtdBTuK2AuXDuAJAhWuoqj5bAsZq" in log.line or "QmfK8mnarCoDoCVhmc17XbBeFALGB9Pny3aXxiTxzaXpMq" in log.line:
+                        continue
                     if (pll := log.is_start_providing()) is not None:
                         publications[pll.cid] = Publication(file, pll.cid, pll.timestamp)
                     if (pll := log.is_start_getting_closest_peers()) is not None and pll.cid in publications:

@@ -17,7 +17,7 @@ def download_logs(nodes_list, outfile):
                 nodes += [line[5]]
     
     for node in nodes:
-        cmd = """logcli query --limit=987654321 --since=2000h --output=jsonl '{host="node%s"}' > %s-node-%s.log """ % (
+        cmd = """logcli query --limit=987654321 --since=72h --output=jsonl '{host="node%s"}' > %s-node-%s.log """ % (
             node, outfile, node)
         run(cmd, shell=True)
 
